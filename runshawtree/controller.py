@@ -78,8 +78,10 @@ class TreeSimulator(TreeBase):
 
 
 class TreeAPI(TreeBase):
-    def __init__(self, pin: int = 18, num_leds: int = 200, brightness: int = 255):
-        super().__init__(num_leds)
+    def __init__(
+        self, pin: int = 18, num_leds: int = 200, brightness: int = 255, gbr=True
+    ):
+        super().__init__(num_leds, gbr)
         if not PixelStrip:
             raise RuntimeError("rpi_ws281x library is not available.")
         self.strip = PixelStrip(num=num_leds, pin=pin, brightness=brightness)
