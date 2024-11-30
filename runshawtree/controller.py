@@ -10,11 +10,10 @@ except ImportError:
 
 
 class TreeBase:
-    def __init__(self, num_leds: int = 200, gbr=True):
+    def __init__(self, num_leds: int = 200):
         self.num_leds = num_leds
         self.colors = [(0, 0, 0)] * num_leds
         self.running = True
-        self.gbr = gbr
 
     def set_pixel(self, index, color):
         if 0 <= index < self.num_leds:
@@ -78,19 +77,17 @@ class TreeSimulator(TreeBase):
 
 
 class TreeAPI(TreeBase):
-    def __init__(
-        self, pin: int = 18, num_leds: int = 200, brightness: int = 255, gbr=True
-    ):
-        super().__init__(num_leds, gbr)
+    def __init__(self, pin: int = 18, num_leds: int = 200, brightness: int = 255):
+        super().__init__(num_leds)
         if not PixelStrip:
             raise RuntimeError("rpi_ws281x library is not available.")
-        self.strip = PixelStrip(num=num_leds, pin=pin, brightness=brightness)
+        self.strip = PixelStrip(
+            num=num_leds, pin=pin, brightness=brightness, strip_type="GRB"
+        )
         self.strip.begin()
 
     def show(self):
         for i, color in enumerate(self.colors):
-            if self.gbr:
-                color = color[1], color[0], color[2]
             self.strip.setPixelColor(i, Color(*color))
         self.strip.show()
 
