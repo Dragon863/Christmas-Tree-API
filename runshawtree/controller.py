@@ -10,10 +10,11 @@ except ImportError:
 
 
 class TreeBase:
-    def __init__(self, num_leds: int = 200):
+    def __init__(self, num_leds: int = 200, gbr=True):
         self.num_leds = num_leds
         self.colors = [(0, 0, 0)] * num_leds
         self.running = True
+        self.gbr = gbr
 
     def set_pixel(self, index, color):
         if 0 <= index < self.num_leds:
@@ -86,6 +87,8 @@ class TreeAPI(TreeBase):
 
     def show(self):
         for i, color in enumerate(self.colors):
+            if self.gbr:
+                color = color[1], color[0], color[2]
             self.strip.setPixelColor(i, Color(*color))
         self.strip.show()
 
