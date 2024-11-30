@@ -71,6 +71,10 @@ class TreeSimulator(TreeBase):
             )
         pygame.display.flip()
 
+    def quit(self):
+        pygame.quit()
+        self.running = False
+
 
 class TreeAPI(TreeBase):
     def __init__(self, pin: int = 18, num_leds: int = 200, brightness: int = 255):
@@ -85,6 +89,11 @@ class TreeAPI(TreeBase):
             self.strip.setPixelColor(i, Color(*color))
         self.strip.show()
 
+    def quit(self):
+        self.clear()
+        self.show()
+        self.strip.stop()
+
 
 class Tree:
     def __init__(self, debug=False, **kwargs):
@@ -94,8 +103,9 @@ class Tree:
         return getattr(self.backend, name)
 
 
+# Example usage
 if __name__ == "__main__":
-    tree = Tree(debug=False, num_leds=200)
+    tree = Tree(debug=True, num_leds=200)
     try:
         for i in range(tree.backend.num_leds):
             tree.set_pixel(i, (255, 0, 0))
@@ -105,3 +115,4 @@ if __name__ == "__main__":
         tree.show()
     except KeyboardInterrupt:
         tree.backend.running = False
+    tree.quit()
