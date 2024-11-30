@@ -82,7 +82,7 @@ class TreeAPI(TreeBase):
         if not PixelStrip:
             raise RuntimeError("rpi_ws281x library is not available.")
         self.strip = PixelStrip(
-            num=num_leds, pin=pin, brightness=brightness, strip_type="GRB"
+            num=num_leds, pin=pin, brightness=brightness, strip_type="GBR"
         )
         self.strip.begin()
 
