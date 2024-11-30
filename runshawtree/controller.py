@@ -1,5 +1,6 @@
 import time
 import pygame
+import rpi_ws281x
 
 try:
     from rpi_ws281x import PixelStrip, Color
@@ -82,7 +83,10 @@ class TreeAPI(TreeBase):
         if not PixelStrip:
             raise RuntimeError("rpi_ws281x library is not available.")
         self.strip = PixelStrip(
-            num=num_leds, pin=pin, brightness=brightness, strip_type="GBR"
+            num=num_leds,
+            pin=pin,
+            brightness=brightness,
+            strip_type=rpi_ws281x.ws.WS2811_STRIP_GBR,
         )
         self.strip.begin()
 
