@@ -11,10 +11,11 @@ except ImportError:
 
 
 class TreeBase:
-    def __init__(self, num_leds: int = 200):
+    def __init__(self, num_leds: int = 200, order=["green", "blue", "red"]):
         self.num_leds = num_leds
         self.colors = [(0, 0, 0)] * num_leds
         self.running = True
+        self.order = order
 
     def set_pixel(self, index, color):
         if 0 <= index < self.num_leds:
@@ -86,13 +87,25 @@ class TreeAPI(TreeBase):
             num=num_leds,
             pin=pin,
             brightness=brightness,
-            strip_type=rpi_ws281x.ws.WS2811_STRIP_GBR,
         )
         self.strip.begin()
 
     def show(self):
         for i, color in enumerate(self.colors):
-            self.strip.setPixelColor(i, Color(*color))
+            if self.order != ["red", "green", "blue"]:
+                r, g, b = color
+                if self.order == ["green", "blue", "red"]:
+                    self.strip.setPixelColor(i, Color(g, b, r))
+                elif self.order == ["blue", "red", "green"]:
+                    self.strip.setPixelColor(i, Color(b, r, g))
+                elif self.order == ["blue", "green", "red"]:
+                    self.strip.setPixelColor(i, Color(b, g, r))
+                elif self.order == ["red", "blue", "green"]:
+                    self.strip.setPixelColor(i, Color(r, b, g))
+                elif self.order == ["green", "red", "blue"]:
+                    self.strip.setPixelColor(i, Color(g, r, b))
+            else:
+                self.strip.setPixelColor(i, Color(*color))
         self.strip.show()
 
     def quit(self):
