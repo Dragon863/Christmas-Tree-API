@@ -1,5 +1,4 @@
 import time
-import pygame
 import rpi_ws281x
 
 try:
@@ -33,6 +32,8 @@ class TreeBase:
 
 class TreeSimulator(TreeBase):
     def __init__(self, num_leds: int = 200, led_size: int = 10):
+        import pygame
+
         super().__init__(num_leds)
         self.led_size = 10
         self.led_size = led_size
@@ -64,6 +65,8 @@ class TreeSimulator(TreeBase):
         self.colors = [corrected_color] * self.num_leds
 
     def show(self):
+        import pygame
+
         self.screen.fill((0, 0, 0))
         for i, color in enumerate(self.colors):
             x = i * self.led_size % self.width
@@ -74,6 +77,8 @@ class TreeSimulator(TreeBase):
         pygame.display.flip()
 
     def quit(self):
+        import pygame
+
         pygame.quit()
         self.running = False
 
