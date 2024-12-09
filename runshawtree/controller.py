@@ -1,6 +1,4 @@
 import time
-import rpi_ws281x
-
 try:
     from rpi_ws281x import PixelStrip, Color
 except ImportError:
